@@ -61,7 +61,7 @@ class Game
    void moveEnemies();
    pair<int, int> getPlayerPos();
    char at(int x, int y);
-   bool checkItem(string direction, pair<int, int> playerpos);
+   pair<pair<int, int>, bool> checkItem(string direction, pair<int, int> playerpos);
 };
 
 #endif
