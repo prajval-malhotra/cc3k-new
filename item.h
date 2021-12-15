@@ -13,4 +13,6 @@ class Item {
     double getBuff();
     pair<int, int> getItemPos(); 
     ~Item();
-}
+};
+
+#endif
