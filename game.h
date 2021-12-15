@@ -8,6 +8,7 @@
 #include "enemy.h"
 #include <memory>
 #include <vector>
+#include "item.h"
 
 using namespace std;
 
@@ -43,11 +44,12 @@ class Game
    bool checkPlayerMove(int x, int y);
    bool checkEnemyMove(int x, int y);
    bool nextFloor;
-   vector<shared_ptr<Enemy>> enemies;
    pair<int, int> chooseMove(pair<int, int> enemypos);
    pair<int, int> ppos;
    int seed;
  public:
+   vector<shared_ptr<Enemy>> enemies;
+   vector<shared_ptr<Item>> items;
    bool inputFloor;
    void displayMap();
    void generate();
@@ -55,10 +57,12 @@ class Game
    Game(string temp[25]);
    void resetMap();
    bool getNextFloor();
-   pair<int, int> movePlayer(string command, int playerx, int playery, char playerTile);
+   pair<pair<int, int>, char> movePlayer (string command, int playerx, int playery, char playerTile);
    void moveEnemies();
    pair<int, int> getPlayerPos();
    char at(int x, int y);
+   void change(int x, int y, char ch);
+   pair<pair<int, int>, bool> checkItem(string direction, pair<int, int> playerpos);
 };
 
 #endif
