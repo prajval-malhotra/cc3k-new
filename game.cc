@@ -261,7 +261,7 @@ bool Game :: getNextFloor ()
   return nextFloor;
 }
 
-pair<int, int> Game :: movePlayer (string command, int playerx, int playery, char playerTile)
+pair<pair<int, int>, char> Game :: movePlayer (string command, int playerx, int playery, char playerTile)
 {
   if (command == "no")
   {
@@ -270,12 +270,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx--][playery] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "ne")
@@ -285,12 +285,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx--][playery--] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "nw")
@@ -300,12 +300,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx--][playery++] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "w")
@@ -315,12 +315,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx][playery--] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "e")
@@ -330,12 +330,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx][playery++] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "so")
@@ -345,12 +345,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx++][playery] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "sw")
@@ -360,12 +360,12 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx++][playery--] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else if (command == "se")
@@ -375,18 +375,18 @@ pair<int, int> Game :: movePlayer (string command, int playerx, int playery, cha
       map[playerx++][playery++] = playerTile;
       playerTile = map[playerx][playery];
       map[playerx][playery] = '@';
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
     else
     {
       cout << "no.\n";
-      return make_pair(playerx, playery);
+      return make_pair(make_pair(playerx, playery), playerTile);
     }
   }
   else
   {
     cout << "how?\n";
-    return make_pair(playerx, playery);
+    return make_pair(make_pair(playerx, playery), playerTile);
   }
 }
 
@@ -413,7 +413,10 @@ pair<int, int> Game :: chooseMove(pair<int, int> enemypos)
       }
     }
   }
-  return possibleMoves[rand() % possibleMoves.size()];
+  if (possibleMoves.size() != 0)
+    return possibleMoves[rand() % possibleMoves.size()];
+  else
+    return make_pair(0, 0);
 }
 
 void Game :: moveEnemies()
@@ -421,8 +424,18 @@ void Game :: moveEnemies()
   for (int i = 0; i < enemies.size(); ++i)
   {
     pair<int, int> newPos = chooseMove(enemies[i]->getPos());
-    map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
-    map[newPos.first][newPos.second] = 'E';
-    enemies[i]->setPos(chooseMove(enemies[i]->getPos()));
+    if (newPos.first == 0 && newPos.second == 0)
+    {}
+    else
+    {
+      map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
+      map[newPos.first][newPos.second] = 'E';
+      enemies[i]->setPos(newPos);
+    }
   }
+}
+
+char Game :: at(int x, int y)
+{
+  return map[x][y];
 }

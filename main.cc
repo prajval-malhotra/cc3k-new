@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 {
   vector<shared_ptr<Game>> floors;
   shared_ptr<Player> player;
+  player = make_shared<Player>();
   char buffer;
   int curFloor = 0;
   string input;
@@ -50,7 +51,9 @@ int main(int argc, char *argv[])
     return 0;
   while(input != "q" && !floors[curFloor]->getNextFloor())
   {
-    player->setPos(floors[curFloor]->movePlayer(input, player->getPos().first, player->getPos().second, player->getTile()));
+    pair<pair<int, int>, char> playerstuff = floors[curFloor]->movePlayer(input, player->getPos().first, player->getPos().second, player->getTile());
+    player->setPos(playerstuff.first);
+    player->setTile(playerstuff.second);
     floors[curFloor]->moveEnemies();
     if (!floors[curFloor]->getNextFloor())
     {
@@ -59,6 +62,5 @@ int main(int argc, char *argv[])
       cout << "Enter your command: ";
       cin >> input;
     }
-
   }
 }

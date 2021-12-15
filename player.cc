@@ -2,15 +2,14 @@
 
 using namespace std;
 
-Player::Player(): hp{125}, atk{25}, def{25}, tile{'.'}, x{0}, y{0} {}
+Player::Player(): hp{125}, atk{25}, def{25}, tile{'.'} {}
 
 void Player::setPos(pair<int, int> newPos){
-  x = newPos.first;
-  y = newPos.second;
+  pos = newPos;
 }
 
 pair<int, int> Player::getPos(){
-  return make_pair(x, y);
+  return pos;
 }
 
 void Player::setTile(char newTile) {
