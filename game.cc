@@ -1,14 +1,12 @@
 #include "game.h"
 #include <vector>
 #include <cstdlib>
-#include "PRNG.h"
-#include <ctime>
 
 using namespace std;
 
-Game :: Game() : inputFloor{false}, nextFloor{false}, seed{1024}  {}
+Game :: Game() : inputFloor{false}, nextFloor{false}, ppos{make_pair(0, 0)} {}
 
-Game :: Game(string temp[25]) : inputFloor{true}, nextFloor{false}, seed{1024}
+Game :: Game(string temp[25]) : inputFloor{true}, nextFloor{false}, ppos{make_pair(0, 0)}
 {
   for (int i = 0; i < 25; ++i)
   {
@@ -60,9 +58,6 @@ void Game::resetMap()
 
 pair<int, int> Game::generatePosition(int chamber)
 {
-  srand(time(NULL));
-  PRNG prng(rand() % RAND_MAX);
-  PRNG prng1(prng());
   int x, y, index, rect, i, j;
   vector<pair<int, int>> positions;
   switch(chamber)
@@ -76,11 +71,10 @@ pair<int, int> Game::generatePosition(int chamber)
             positions.push_back(make_pair(i, j));
         }
       }
-      index = prng(positions.size() - 1);
+      index = rand() % positions.size();
       return positions[index];
 
     case 2:
-      srand(seed++);
       rect = (rand() % 4) + 1;
       switch(rect)
       {
@@ -93,7 +87,7 @@ pair<int, int> Game::generatePosition(int chamber)
                 positions.push_back(make_pair(i, j));
             }
           }
-          index = prng(positions.size() - 1);
+          index = rand() % positions.size();
           return positions[index];
 
         case 2:
@@ -102,7 +96,7 @@ pair<int, int> Game::generatePosition(int chamber)
             if (map[5][i] == '.')
               positions.push_back(make_pair(5, i));
           }
-          index = prng(positions.size() - 1);
+          index = rand() % positions.size();
           return positions[index];
 
         case 3:
@@ -111,7 +105,7 @@ pair<int, int> Game::generatePosition(int chamber)
             if (map[6][i] == '.')
               positions.push_back(make_pair(6, i));
           }
-          index = prng(positions.size() - 1);
+          index = rand() % positions.size();
           return positions[index];
 
         case 4:
@@ -123,7 +117,7 @@ pair<int, int> Game::generatePosition(int chamber)
                 positions.push_back(make_pair(i, j));
             }
           }
-          index = prng(positions.size() - 1);
+          index = rand() % positions.size();
           return positions[index];
 
         default:
@@ -139,7 +133,7 @@ pair<int, int> Game::generatePosition(int chamber)
               positions.push_back(make_pair(i, j));
           }
         }
-        index = prng(positions.size() - 1);
+        index = rand() % positions.size();
         return positions[index];
 
       case 4:
@@ -151,12 +145,11 @@ pair<int, int> Game::generatePosition(int chamber)
               positions.push_back(make_pair(i, j));
           }
         }
-        index = prng(positions.size() - 1);
+        index = rand() % positions.size();
         return positions[index];
 
       case 5:
-      srand(seed++);
-      rect = (rand() % 2) + 1;
+        rect = (rand() % 2) + 1;
         switch(rect)
         {
           case 1 :
@@ -168,7 +161,7 @@ pair<int, int> Game::generatePosition(int chamber)
                   positions.push_back(make_pair(i, j));
               }
             }
-            index = prng(positions.size() - 1);
+            index = rand() % positions.size();
             return positions[index];
 
           case 2:
@@ -180,7 +173,7 @@ pair<int, int> Game::generatePosition(int chamber)
                   positions.push_back(make_pair(i, j));
               }
             }
-            index = prng(positions.size() - 1);
+            index = rand() % positions.size();
             return positions[index];
 
           default:
@@ -194,11 +187,9 @@ pair<int, int> Game::generatePosition(int chamber)
 
 void Game :: generate()
 {
-  srand(time(NULL));
-  PRNG prng(rand() % RAND_MAX);
   int i;
   // generate player first - @.
-  int pchamber = prng(1, 5);
+  int pchamber = (rand() % 5) + 1;
   ppos = generatePosition(pchamber);
   map[ppos.first][ppos.second] = '@';
 
@@ -212,7 +203,7 @@ void Game :: generate()
       chambers.push_back(i);
     }
   }
-  int stchamber = chambers[prng(3)];
+  int stchamber = chambers[rand() % 4];
   pair<int, int> stairpos = generatePosition(stchamber);
   map[stairpos.first][stairpos.second] = '\\';
 
@@ -221,7 +212,7 @@ void Game :: generate()
   pair<int, int> itempos;
   for(i = 0; i < 10; ++i)
   {
-    itemchamber = prng(1, 5);
+    itemchamber = (rand() % 5) + 1;
     itempos = generatePosition(itemchamber);
     map[itempos.first][itempos.second] = 'I';
   }
@@ -231,7 +222,7 @@ void Game :: generate()
   pair<int, int> enemypos;
   for(i = 0; i < 20; ++i)
   {
-    echamber = prng(1, 5);
+    echamber = (rand() % 5) + 1;
     enemypos = generatePosition(echamber);
     map[enemypos.first][enemypos.second] = 'E';
     enemies.push_back(make_shared<Enemy>(enemypos));
@@ -422,12 +413,7 @@ pair<int, int> Game :: chooseMove(pair<int, int> enemypos)
       }
     }
   }
-  if (possibleMoves.size() != 0)
-  {
-    return possibleMoves[rand() % possibleMoves.size()];
-  }
-  else
-    return make_pair(0, 0);
+  return possibleMoves[rand() % possibleMoves.size()];
 }
 
 void Game :: moveEnemies()
@@ -435,18 +421,8 @@ void Game :: moveEnemies()
   for (int i = 0; i < enemies.size(); ++i)
   {
     pair<int, int> newPos = chooseMove(enemies[i]->getPos());
-    if (newPos.first == 0 && newPos.second == 0)
-    {}
-    else
-    {
-      map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
-      map[newPos.first][newPos.second] = 'E';
-      enemies[i]->setPos(newPos);
-    }
+    map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
+    map[newPos.first][newPos.second] = 'E';
+    enemies[i]->setPos(chooseMove(enemies[i]->getPos()));
   }
-}
-
-char Game :: at(int x, int y)
-{
-  return map[x][y];
 }

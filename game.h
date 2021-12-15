@@ -55,7 +55,7 @@ class Game
    Game(string temp[25]);
    void resetMap();
    bool getNextFloor();
-   pair<int, int> movePlayer(string command, int playerx, int playery, char playerTile);
+   pair<pair<int, int>, char> movePlayer (string command, int playerx, int playery, char playerTile);
    void moveEnemies();
    pair<int, int> getPlayerPos();
    char at(int x, int y);
