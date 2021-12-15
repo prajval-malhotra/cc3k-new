@@ -46,6 +46,7 @@ class Game
    vector<shared_ptr<Enemy>> enemies;
    pair<int, int> chooseMove(pair<int, int> enemypos);
    pair<int, int> ppos;
+   int seed;
  public:
    bool inputFloor;
    void displayMap();
