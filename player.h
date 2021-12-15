@@ -22,15 +22,15 @@ class Player {
     
     void setPos(pair<int, int> newPos);
 
-    void setHp(int);
-    void setAtk(double);
-    void setDef(double);
-    int getHp();
-    double getAtk();
-    double getDef();
-    double getBaseHp();
-    double getBaseAtk();
-    double getBaseDef();
+    void setHP(int);
+    void setATK(double);
+    void setDEF(double);
+    int getHP();
+    double getATK();
+    double getDEF();
+    double getBaseHP();
+    double getBaseATK();
+    double getBaseDEF();
 
     pair<int, int> getPos();
     void setTile(char newTile);

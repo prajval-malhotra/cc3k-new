@@ -7,44 +7,44 @@ Player::Player(): hp{125}, atk{25}, def{25}, baseHp{125}, baseAtk{25}, baseDef{2
 void Player::useItem(shared_ptr<Item> item) {
   double buff = item->getBuff();
   if(hp + buff >= 0) hp += buff;
-  if(hp + buff >= getBaseHp()) hp = getBaseHp();
+  if(hp + buff >= getBaseHP()) hp = getBaseHP();
   if(atk + buff >= 0) atk += buff;
   if(def + buff >= 0) def += buff;
 }
 
-void Player::setHp(int new_hp) {
+void Player::setHP(int new_hp) {
   hp = new_hp;
 }
 
-void Player::setAtk(double new_atk) {
+void Player::setATK(double new_atk) {
   atk = new_atk;
 }
 
-void Player::setDef(double new_def) {
+void Player::setDEF(double new_def) {
   def = new_def;
 }
 
-int Player::getHp() {
+int Player::getHP() {
   return hp;
 }
 
-double Player::getAtk() {
+double Player::getATK() {
   return atk;
 }
 
-double Player::getDef() {
+double Player::getDEF() {
   return def;
 }
 
-double Player::getBaseHp() {
+double Player::getBaseHP() {
   return baseHp;
 }
 
-double Player::getBaseAtk() {
+double Player::getBaseATK() {
   return baseAtk;
 }
 
-double Player::getBaseDef() {
+double Player::getBaseDEF() {
   return baseDef;
 }
 
