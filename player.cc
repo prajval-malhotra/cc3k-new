@@ -1,4 +1,6 @@
 #include "player.h"
+#include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -10,6 +12,12 @@ void Player::useItem(shared_ptr<Item> item) {
   if(hp + buff >= getBaseHP()) hp = getBaseHP();
   if(atk + buff >= 0) atk += buff;
   if(def + buff >= 0) def += buff;
+}
+
+int Player::damage(shared_ptr<Enemy> enemy) {
+  // Damage(Defender) = ceiling((100/(100 + Def(Defender))) ∗ Atk(Attacker))
+  int new_damage = ceil((100/(100 + enemy->getDEF())) * atk);
+  return new_damage;
 }
 
 void Player::setHP(int new_hp) {

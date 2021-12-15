@@ -1,5 +1,5 @@
-#ifndef _ITEM_H_
-#define _ITEM_H_
+#ifndef ITEM_H
+#define ITEM_H
 
 #include <utility>
 
@@ -11,7 +11,7 @@ class Item {
     public:
     Item(double buff, pair<int, int> ItemPos);
     double getBuff();
-    pair<int, int> getPos(); 
+    pair<int, int> getPos();
     ~Item();
 };
 

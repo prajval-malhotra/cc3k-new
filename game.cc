@@ -436,14 +436,17 @@ void Game :: moveEnemies()
 {
   for (int i = 0; i < enemies.size(); ++i)
   {
-    pair<int, int> newPos = chooseMove(enemies[i]->getPos());
-    if (newPos.first == 0 && newPos.second == 0)
-    {}
-    else
+    if (!enemies[i]->getCombat())
     {
-      map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
-      map[newPos.first][newPos.second] = 'E';
-      enemies[i]->setPos(newPos);
+      pair<int, int> newPos = chooseMove(enemies[i]->getPos());
+      if (newPos.first == 0 && newPos.second == 0)
+      {}
+      else
+      {
+        map[enemies[i]->getPos().first][enemies[i]->getPos().second] = '.';
+        map[newPos.first][newPos.second] = 'E';
+        enemies[i]->setPos(newPos);
+      }
     }
   }
 }
@@ -534,7 +537,96 @@ pair<pair<int, int>, bool> Game :: checkItem(string direction, pair<int, int> pl
   }
 }
 
-void Game :: change(int x, int y, char ch)
+void Game :: change(pair<int, int> pos, char ch)
 {
-  map[x][y] = ch;
+  map[pos.first][pos.second] = ch;
+}
+
+pair<pair<int, int>, bool> Game :: checkEnemy(string direction, pair<int, int> playerpos)
+{
+  pair<int, int> location = make_pair(0, 0);
+  if (direction == "no")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "nw")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second - 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "ne")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second + 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "w")
+  {
+    location.first = playerpos.first;
+    location.second = playerpos.second - 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "e")
+  {
+    location.first = playerpos.first;
+    location.second = playerpos.second + 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "so")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "sw")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second - 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "se")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second + 1;
+    if (at(location.first, location.second) == 'E')
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else
+  {
+    return make_pair(location, false);
+  }
+}
+
+void Game :: resetCombat()
+{
+  for (int i = 0; i < enemies.size(); ++i)
+  {
+    enemies[i]->setCombat(false);
+  }
 }

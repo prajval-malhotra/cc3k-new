@@ -1,12 +1,15 @@
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <utility>
 #include <memory>
 #include "item.h"
+#include "enemy.h"
 
 
 using namespace std;
+
+class Enemy;
 
 class Player {
     double hp;
@@ -19,7 +22,8 @@ class Player {
     Player();
 
     void useItem(shared_ptr<Item>);
-    
+    int damage(shared_ptr<Enemy>);
+
     void setPos(pair<int, int> newPos);
 
     void setHP(int);

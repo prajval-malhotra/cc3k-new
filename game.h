@@ -61,8 +61,10 @@ class Game
    void moveEnemies();
    pair<int, int> getPlayerPos();
    char at(int x, int y);
-   void change(int x, int y, char ch);
+   void change(pair<int, int> pos, char ch);
    pair<pair<int, int>, bool> checkItem(string direction, pair<int, int> playerpos);
+   pair<pair<int, int>, bool> checkEnemy(string direction, pair<int, int> playerpos);
+   void resetCombat();
 };
 
 #endif
