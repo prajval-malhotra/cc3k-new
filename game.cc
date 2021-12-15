@@ -224,6 +224,8 @@ void Game :: generate()
     itemchamber = prng(1, 5);
     itempos = generatePosition(itemchamber);
     map[itempos.first][itempos.second] = 'I';
+    int buff = prng(1, 20);
+    items.push_back(make_shared<Item>(buff, itempos));
   }
 
   // then enemies - E.
@@ -449,4 +451,85 @@ void Game :: moveEnemies()
 char Game :: at(int x, int y)
 {
   return map[x][y];
+}
+
+pair<pair<int, int>, bool> Game :: checkItem(string direction, pair<int, int> playerpos)
+{
+  pair<int, int> location = make_pair(0, 0);
+  if (direction == "no")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second;
+    if(at(playerpos.first - 1, playerpos.second) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "nw")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second - 1;
+    if(at(playerpos.first - 1, playerpos.second - 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "ne")
+  {
+    location.first = playerpos.first - 1;
+    location.second = playerpos.second + 1;
+    if(at(playerpos.first - 1, playerpos.second + 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "w")
+  {
+    location.first = playerpos.first;
+    location.second = playerpos.second - 1;
+    if(at(playerpos.first, playerpos.second - 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "e")
+  {
+    location.first = playerpos.first;
+    location.second = playerpos.second + 1;
+    if(at(playerpos.first, playerpos.second + 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "so")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second;
+    if(at(playerpos.first + 1, playerpos.second) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "sw")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second - 1;
+    if(at(playerpos.first + 1, playerpos.second - 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else if (direction == "se")
+  {
+    location.first = playerpos.first + 1;
+    location.second = playerpos.second + 1;
+    if(at(playerpos.first + 1, playerpos.second + 1) == "I")
+      return make_pair(location, true);
+    else
+      return make_pair(location, false);
+  }
+  else
+  {
+    return make_pair(location, false);
+  }
 }
