@@ -2,15 +2,14 @@
 
 using namespace std;
 
-Enemy::Enemy(pair<int, int> pos): hp{140}, atk{20}, def{20}, x{pos.first}, y{pos.second} {}
+Enemy::Enemy(pair<int, int> pos): hp{140}, atk{20}, def{20}, pos{pos} {}
 
 void Enemy::setPos(pair<int, int> newPos){
-  x = newPos.first;
-  y = newPos.second;
+  pos = newPos;
 }
 
 pair<int, int> Enemy::getPos(){
-  return make_pair(x, y);
+  return pos;
 }
 
 Enemy::~Enemy() {}

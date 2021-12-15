@@ -57,6 +57,7 @@ class Game
    pair<int, int> movePlayer(string command, int playerx, int playery, char playerTile);
    void moveEnemies();
    pair<int, int> getPlayerPos();
+   char at(int x, int y);
 };
 
 #endif
