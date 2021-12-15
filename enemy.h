@@ -6,10 +6,10 @@
 using namespace std;
 
 class Enemy {
+  int x, y;
   double hp;
   double atk;
   double def;
-  pair<int, int> pos;
 public:
   Enemy(pair<int, int> pos);
   void setPos(pair<int, int>);

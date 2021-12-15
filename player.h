@@ -6,11 +6,11 @@
 using namespace std;
 
 class Player {
+  int x, y;
   double hp;
   double atk;
   double def;
   char tile;
-  pair<int, int> pos;
 public:
   Player();
   void setPos(pair<int, int> newPos);
