@@ -9,7 +9,7 @@ class Item {
     double buff;
     pair<int, int> ItemPos;
     public:
-    Item(double buff);
+    Item(double buff, pair<int, int> ItemPos);
     double getBuff();
     pair<int, int> getItemPos(); 
     ~Item();
